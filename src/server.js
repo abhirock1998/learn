@@ -1,10 +1,10 @@
 const path = require("path");
 const cors = require("cors");
 const express = require("express");
-const router = require("@routes/index");
+const router = require("./routes");
 const { configDotenv } = require("dotenv");
-const { connectToDB } = require("@services/db.service");
-const { errorMiddleware } = require("@middlewares/error.middleware");
+const connectToDB = require("./services/db.service");
+const errorMiddleware = require("./middlewares/error.middleware");
 
 configDotenv();
 
@@ -39,14 +39,14 @@ const buildFolder = path.join(__dirname, "..", "..", "client", "build");
 app.use("/api/v1/", router);
 
 // Serve app production bundle
-app.use(express.static(buildFolder));
+// app.use(express.static(buildFolder));
 
-app.get("*", function (req, res) {
-  console.log(
-    `${colors.green}${emojis.check} Serving index.html${colors.reset}`
-  );
-  res.sendFile(path.join(buildFolder, "index.html"));
-});
+// app.get("*", function (req, res) {
+//   console.log(
+//     `${colors.green}${emojis.check} Serving index.html${colors.reset}`
+//   );
+//   res.sendFile(path.join(buildFolder, "index.html"));
+// });
 
 // Error handling middleware
 app.use(errorMiddleware);

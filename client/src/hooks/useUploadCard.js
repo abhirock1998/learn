@@ -7,7 +7,7 @@ const useUploadCard = () => {
 
   return useMutation({
     mutationFn: async (formData) => {
-      const response = await axios.post(`${SERVER_URL}/upload`, formData, {
+      const response = await axios.post(`${SERVER_URL}/ocr/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

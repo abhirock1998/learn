@@ -7,7 +7,7 @@
  * @param statusCode - The status code of the response.
  * @param data - The data to send.
  */
-export const _response = (res, message, success, statusCode, data) => {
+const _response = (res, message, success, statusCode, data) => {
   if (success) {
     res.status(statusCode).json({ success, message, data });
   } else {
@@ -23,3 +23,5 @@ export const _response = (res, message, success, statusCode, data) => {
     });
   }
 };
+
+module.exports = _response;

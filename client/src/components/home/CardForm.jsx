@@ -2,12 +2,14 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/Button";
 import InputField from "../shared/InputField";
 
-const CardForm = () => {
+const CardForm = ({ initialState }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  console.log("initialState", initialState);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -15,7 +17,7 @@ const CardForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-5">
+    <div className="md:w-1/2 w-full p-5 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <InputField
           label="Name"
@@ -37,8 +39,9 @@ const CardForm = () => {
           label="Company Name"
           id="companyName"
           register={register}
-          required={{ value: true, message: "Company name is required" }}
+          // required={{ value: true, message: "Company name is required" }}
           error={errors.companyName}
+          {...register("companyName", { required: false })}
         />
 
         <InputField
@@ -62,7 +65,7 @@ const CardForm = () => {
           error={errors.phone}
         />
 
-        <TextareaField
+        <InputField
           label="Address"
           id="address"
           register={register}

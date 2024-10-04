@@ -32,20 +32,20 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-const buildFolder = path.join(__dirname, "..", "..", "client", "build");
+const buildFolder = path.join(__dirname, "..", "client", "build");
 console.log(buildFolder);
 // Registering Index router
 app.use("/api/v1/", router);
 
 // Serve app production bundle
-// app.use(express.static(buildFolder));
+app.use(express.static(buildFolder));
 
-// app.get("*", function (req, res) {
-//   console.log(
-//     `${colors.green}${emojis.check} Serving index.html${colors.reset}`
-//   );
-//   res.sendFile(path.join(buildFolder, "index.html"));
-// });
+app.get("*", function (req, res) {
+  console.log(
+    `${colors.green}${emojis.check} Serving index.html${colors.reset}`
+  );
+  res.sendFile(path.join(buildFolder, "index.html"));
+});
 
 // Error handling middleware
 app.use(errorMiddleware);

@@ -2,14 +2,13 @@ const Button = ({ children, isLoading, ...props }) => {
   return (
     <button
       {...props}
-      disabled={isLoading}
       className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center  ${props.className}`}
     >
       {isLoading ? (
         <span role="status">
           <svg
             aria-hidden="true"
-            class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+            className="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +22,7 @@ const Button = ({ children, isLoading, ...props }) => {
               fill="currentFill"
             />
           </svg>
-          <span class="sr-only">Loading...</span>
+          <span className="sr-only">Loading...</span>
         </span>
       ) : (
         children

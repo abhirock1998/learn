@@ -1,36 +1,56 @@
-import React from "react";
+import React, { useRef } from "react";
 
-import Navbar from "../../components/shared/Navbar";
-import Button from "../../components/shared/Button";
 import CardForm from "../../components/home/CardForm";
 import UploadImage from "../../components/home/UploadImage";
 import UploadImagePreview from "../../components/home/UploadImagePreview";
 import useUploadCard from "../../hooks/useUploadCard";
 import useNotificationHook from "../../hooks/useNotificationHook";
-import { set } from "mongoose";
 
 const Page = () => {
+  const formRef = useRef();
   const [file, setFile] = React.useState(null);
   const notification = useNotificationHook();
   const { isPending, mutateAsync } = useUploadCard();
-  const [responseData, setResponseData] = React.useState(null);
 
   const handleReset = () => {
     setFile(null);
-    setResponseData(null);
   };
 
-  const handleImageProcess = async () => {
+  const handleImageProcess = async (file) => {
     if (!file) return;
+    setFile(file);
 
     try {
       const formData = new FormData();
       formData.append("card", file);
       await mutateAsync(formData, {
-        onSuccess: (data) => {
-          notification().success("Image process successfully!");
+        onSuccess: (response) => {
+          const { data, success } = response;
 
-          setResponseData(data);
+          if (!success) {
+            return notification().warning(
+              "Something went wrong. Try again later!"
+            );
+          }
+
+          const {
+            address,
+            email,
+            name,
+            phone,
+            jobTitle = "",
+            companyName = "",
+          } = data;
+
+          if (formRef.current) {
+            formRef.current.setFieldValue("address", address);
+            formRef.current.setFieldValue("email", email);
+            formRef.current.setFieldValue("name", name);
+            formRef.current.setFieldValue("phone", phone);
+            formRef.current.setFieldValue("jobTitle", jobTitle);
+            formRef.current.setFieldValue("companyName", companyName);
+          }
+          notification().success("Image processed successfully!");
         },
         onError: (err) => {
           notification().error(`Upload failed: ${err.message}`);
@@ -43,49 +63,16 @@ const Page = () => {
 
   return (
     <section className="h-full bg-gray-100 overflow-y-scroll">
-      <Navbar />
-      <div className="h-full mt-[60px] py-10 flex flex-col md:w-[80%] w-[90%] mx-auto">
-        {!responseData ? (
-          <>
-            <div className="w-full flex justify-center md:flex-row flex-col gap-4 border border-gray-200 md:h-[50%] transition-all duration-200 shadow-2xl rounded-md">
-              <div className="md:w-1/2 p-5">
-                <UploadImage onUpload={setFile} fileData={file} />
-              </div>
-              {/* max-h-[25rem] max-h-[25rem] */}
-              <div className="md:w-1/2 md:h-auto  flex items-center">
-                <UploadImagePreview file={file} />
-              </div>
-            </div>
-            {file && (
-              <>
-                <div className="my-10 flex justify-center items-center">
-                  <Button
-                    isLoading={isPending}
-                    className="w-[200px]"
-                    onClick={handleImageProcess}
-                  >
-                    Process Image
-                  </Button>
-                  {/* {responseData ? (
-                <Button
-                  disabled={isPending}
-                  className="w-[100px]"
-                  onClick={handleReset}
-                >
-                  Reset
-                </Button>
-              ) : (
-                <Button className="w-[200px]" onClick={handleImageProcess}>
-                  Process Image
-                </Button>
-              )} */}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <CardForm initialState={responseData} />
-        )}
+      <div className="h-full mt-[60px] py-10 flex lg:flex-row flex-col lg:w-[80%] w-full mx-auto p-5">
+        <div className="lg:w-1/2 w-full flex flex-col gap-3">
+          <UploadImage onUpload={handleImageProcess} fileData={file} />
+          <div className="h-[300px] max-h-[300px]">
+            <UploadImagePreview file={file} />
+          </div>
+        </div>
+        <div className="lg:w-1/2 w-full relative">
+          <CardForm ref={formRef} resetData={handleReset} />
+        </div>
       </div>
     </section>
   );

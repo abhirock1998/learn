@@ -1,12 +1,11 @@
+require("dotenv").config();
+
 const path = require("path");
 const cors = require("cors");
 const express = require("express");
 const router = require("./routes");
-const { configDotenv } = require("dotenv");
 const connectToDB = require("./services/db.service");
 const errorMiddleware = require("./middlewares/error.middleware");
-
-configDotenv();
 
 // ANSI escape codes for colors
 const colors = {

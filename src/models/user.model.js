@@ -7,21 +7,22 @@ const userSchema = new mongoose.Schema({
   },
   jobTitle: {
     type: String,
+    required: true,
   },
   companyName: {
     type: String,
   },
-  emailAddress: {
+  email: {
     type: String,
     required: true,
     unique: true,
   },
-  phoneNumber: {
+  phone: {
     type: String,
-    match: /^[0-9]{10,15}$/, // validates phone number
   },
   address: {
     type: String,
+    required: true,
   },
 });
 

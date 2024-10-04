@@ -5,7 +5,10 @@ const Upload = ({ onUpload, fileData }) => {
   const toast = useNotificationHook();
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-5">Upload Image</h1>
+      <h1 className="text-3xl font-bold text-center mt-8 mb-6 text-gray-800">
+        <span className="text-blue-600">Upload, Auto-Fill</span> &amp;{" "}
+        <span className="text-green-600">Edit</span> Your Contact Information
+      </h1>
       <Dropzone
         // disabled={fileData ? true : false}
         onDrop={(acceptedFiles) => {

@@ -165,9 +165,16 @@ const users = [
   },
 ];
 
-const createUser = asyncHandler(async (req, res, next) => {
-  console.log("req.body", req.body);
-  await UserModel.insertMany(users);
+const createUser = asyncHandler(async (req, res) => {
+  const { name, jobTitle, companyName, email, phone, address } = req.body;
+  await UserModel.create({
+    name,
+    jobTitle,
+    companyName,
+    email,
+    phone,
+    address,
+  });
   return _response(res, "User created successfully", true, 200, {});
 });
 
@@ -178,7 +185,10 @@ const getUsers = asyncHandler(async (req, res, next) => {
 
   const totalUsers = await UserModel.find().countDocuments();
 
-  const users = await UserModel.find().skip(skip).limit(limit);
+  const users = await UserModel.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(+limit);
 
   return _response(res, "User retrieved successfully", true, 200, {
     users,

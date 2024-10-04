@@ -10,7 +10,7 @@ const Page = () => {
   const formRef = useRef();
   const [file, setFile] = React.useState(null);
   const notification = useNotificationHook();
-  const { isPending, mutateAsync } = useUploadCard();
+  const { mutateAsync } = useUploadCard();
 
   const handleReset = () => {
     setFile(null);

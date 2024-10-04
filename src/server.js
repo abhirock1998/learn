@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 const buildFolder = path.join(__dirname, "..", "..", "client", "build");
-
+console.log(buildFolder);
 // Registering Index router
 app.use("/api/v1/", router);
 

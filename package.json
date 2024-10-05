@@ -6,7 +6,9 @@
   "scripts": {
     "start": "dist/src/server.js",
     "deploy": "node ./src/preload.js && npm install && node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon ./src/server.js",
+    "build-client": "node ./src/preload.js",
+    "build-server": "npm install && node ./src/server.js"
   },
   "keywords": [],
   "author": "",

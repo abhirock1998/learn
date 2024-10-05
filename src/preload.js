@@ -25,6 +25,9 @@ console.log(
 );
 
 function deletePreviousBuild() {
+  console.log(
+    `${colors.blue}${emojis.wrench} Deleting previous build...${colors.reset}`
+  );
   exec("rm -rf client/dist", (err, stdout, stderr) => {
     if (err) {
       console.error(

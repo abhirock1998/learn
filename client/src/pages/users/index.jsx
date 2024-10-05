@@ -90,6 +90,7 @@ const Page = () => {
 
       <div className="flex justify-center mt-5">
         <Pagination
+          current={page}
           pageSize={10}
           onChange={(page, _) => {
             setPage(page);

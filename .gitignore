@@ -13,8 +13,8 @@ client/node_modules
 
 
 # Ignore build directories
-build
-dist
+# build
+# dist
 
 # Ignore local environment files
 *.local

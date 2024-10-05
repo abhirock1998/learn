@@ -33,12 +33,14 @@ app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 const buildFolder = path.join(__dirname, "..", "client", "dist");
-console.log(buildFolder);
+
 // Registering Index router
 app.use("/api/v1/", router);
 
 // Serve app production bundle
 app.use(express.static(buildFolder));
+
+console.log(`The Build folder is: ${buildFolder}`);
 
 app.get("*", function (req, res) {
   console.log(
@@ -51,6 +53,12 @@ app.get("*", function (req, res) {
 app.use(errorMiddleware);
 
 const PORT = process.env["PORT"] || 3000;
+
+console.log(`---------------------------------`);
+
+console.log(process.env);
+
+console.log(`---------------------------------`);
 
 // Build client app and start server
 app.listen(PORT, async () => {

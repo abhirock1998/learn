@@ -32,7 +32,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-const buildFolder = path.join(__dirname, "..", "client", "build");
+const buildFolder = path.join(__dirname, "..", "client", "dist");
 console.log(buildFolder);
 // Registering Index router
 app.use("/api/v1/", router);

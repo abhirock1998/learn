@@ -49,11 +49,16 @@ function deletePreviousBuild() {
 }
 
 deletePreviousBuild();
-/**
- * Install client dependencies using npm install command
- * and then create a production build using npm run build command
- */
-exec("npm install --omit=dev", { cwd: clientFolder }, (err, stdout, stderr) => {
+
+// Determine if you're in a production environment
+const isProduction = process.env.NODE_ENV === "production";
+
+// Use the appropriate npm install command based on the environment
+const installCommand = isProduction
+  ? "npm install --omit=dev" // Omit dev dependencies in production
+  : "npm install"; // Install all dependencies in development
+
+exec(installCommand, { cwd: clientFolder }, (err, stdout, stderr) => {
   if (err) {
     console.error(
       `${colors.red}${emojis.cross} Error during client dependencies installation: ${err.message}${colors.reset}`

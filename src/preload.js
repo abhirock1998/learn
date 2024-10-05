@@ -58,6 +58,13 @@ const installCommand = isProduction
   ? "npm install --omit=dev" // Omit dev dependencies in production
   : "npm install"; // Install all dependencies in development
 
+console.log(
+  `${colors.blue}${emojis.wrench} Installing client dependencies...${colors.reset}`
+);
+console.log(
+  `${colors.blue}${emojis.wrench} Running command: ${installCommand}${colors.reset}`
+);
+
 exec(installCommand, { cwd: clientFolder }, (err, stdout, stderr) => {
   if (err) {
     console.error(

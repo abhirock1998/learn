@@ -53,7 +53,7 @@ deletePreviousBuild();
  * Install client dependencies using npm install command
  * and then create a production build using npm run build command
  */
-exec("npm install", { cwd: clientFolder }, (err, stdout, stderr) => {
+exec("npm install --omit=dev", { cwd: clientFolder }, (err, stdout, stderr) => {
   if (err) {
     console.error(
       `${colors.red}${emojis.cross} Error during client dependencies installation: ${err.message}${colors.reset}`

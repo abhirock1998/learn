@@ -24,6 +24,28 @@ console.log(
   `${colors.blue}${emojis.folder} Client folder: ${clientFolder}${colors.reset}`
 );
 
+function deletePreviousBuild() {
+  exec("rm -rf client/dist", (err, stdout, stderr) => {
+    if (err) {
+      console.error(
+        `${colors.red}${emojis.cross} Error during previous build deletion: ${err.message}${colors.reset}`
+      );
+      process.exit(1);
+    }
+    if (stderr) {
+      console.error(
+        `${colors.red}${emojis.cross} Error during previous build deletion: ${stderr}${colors.reset}`
+      );
+      process.exit(1);
+    }
+
+    console.log(
+      `${colors.green}${emojis.check} Previous build deleted: ${stdout}${colors.reset}`
+    );
+  });
+}
+
+deletePreviousBuild();
 /**
  * Install client dependencies using npm install command
  * and then create a production build using npm run build command

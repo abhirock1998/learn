@@ -54,12 +54,6 @@ app.use(errorMiddleware);
 
 const PORT = process.env["PORT"] || 3000;
 
-console.log(`---------------------------------`);
-
-console.log(process.env);
-
-console.log(`---------------------------------`);
-
 // Build client app and start server
 app.listen(PORT, async () => {
   await connectToDB();

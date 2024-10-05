@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
+import { forwardRef, useImperativeHandle, useState } from "react";
+
 import Button from "../shared/Button";
 import InputField from "../shared/InputField";
-import { forwardRef, useImperativeHandle } from "react";
 import useCreateUser from "../../hooks/useCreateUser";
 import useNotificationHook from "../../hooks/useNotificationHook";
 
@@ -13,8 +14,9 @@ const CardForm = forwardRef(({ resetData }, ref) => {
     formState: { errors },
     reset,
   } = useForm();
-  const { isPending, mutateAsync } = useCreateUser();
+  const [lock, setLock] = useState(false);
   const notification = useNotificationHook();
+  const { isPending, mutateAsync } = useCreateUser();
 
   useImperativeHandle(ref, () => ({
     setFieldValue: (
@@ -28,6 +30,7 @@ const CardForm = forwardRef(({ resetData }, ref) => {
     ) => {
       setValue(field, value);
     },
+    lockButton: (value) => setLock(value),
   }));
 
   const onSubmit = async (data) => {
@@ -50,11 +53,16 @@ const CardForm = forwardRef(({ resetData }, ref) => {
   };
 
   return (
-    <div ref={ref} className=" w-full p-5 mx-auto">
+    <div ref={ref} className="w-full mx-auto">
+      <p className="text-gray-600 text-sm mb-2">
+        Form will be automatically filled when you upload an image. You can also
+        manually fill the form.
+      </p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <InputField
-          label="Name"
+          label="Name *"
           id="name"
+          placeholder="Enter your name"
           register={register("name", {
             required: { value: true, message: "Name is required" },
             minLength: {
@@ -67,8 +75,9 @@ const CardForm = forwardRef(({ resetData }, ref) => {
 
         {/* Job Title field */}
         <InputField
-          label="Job Title"
+          label="Job Title *"
           id="jobTitle"
+          placeholder="Enter your job title"
           register={register("jobTitle", {
             required: { value: true, message: "Job title is required" },
           })}
@@ -77,8 +86,9 @@ const CardForm = forwardRef(({ resetData }, ref) => {
 
         {/* Company Name field */}
         <InputField
-          label="Company Name"
+          label="Company Name *"
           id="companyName"
+          placeholder="Enter your company name"
           register={register("companyName", {
             required: { value: true, message: "Company name is required" },
           })}
@@ -87,9 +97,10 @@ const CardForm = forwardRef(({ resetData }, ref) => {
 
         {/* Email Address field */}
         <InputField
-          label="Email Address"
+          label="Email Address *"
           id="email"
           type="email"
+          placeholder="Enter your email address"
           register={register("email", {
             required: { value: true, message: "Email is required" },
             pattern: {
@@ -102,14 +113,16 @@ const CardForm = forwardRef(({ resetData }, ref) => {
 
         {/* Phone Number field */}
         <InputField
-          label="Phone Number"
+          label="Phone Number *"
           id="phone"
           type="tel"
+          placeholder="Enter your phone number"
           register={register("phone", {
             required: { value: true, message: "Phone number is required" },
             pattern: {
               value: /^[0-9]{10,15}$/,
-              message: "Enter a valid phone number",
+              message:
+                "Enter a valid phone number and must be between 10-15 digits",
             },
           })}
           error={errors.phone}
@@ -117,8 +130,9 @@ const CardForm = forwardRef(({ resetData }, ref) => {
 
         {/* Address field */}
         <InputField
-          label="Address"
+          label="Address *"
           id="address"
+          placeholder="Enter your address"
           register={register("address", {
             required: { value: true, message: "Address is required" },
             minLength: {
@@ -129,7 +143,11 @@ const CardForm = forwardRef(({ resetData }, ref) => {
           error={errors.address}
         />
         {/* Submit Button */}
-        <Button disabled={isPending} type="submit">
+        <Button
+          disabled={isPending || lock}
+          className="w-full disabled:opacity-5"
+          type="submit"
+        >
           Submit
         </Button>
       </form>

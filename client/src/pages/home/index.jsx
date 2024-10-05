@@ -23,6 +23,7 @@ const Page = () => {
     try {
       const formData = new FormData();
       formData.append("card", file);
+      if (formRef.current) formRef.current.lockButton(true);
       await mutateAsync(formData, {
         onSuccess: (response) => {
           const { data, success } = response;
@@ -55,6 +56,9 @@ const Page = () => {
         onError: (err) => {
           notification().error(`Upload failed: ${err.message}`);
         },
+        onSettled: () => {
+          if (formRef.current) formRef.current.lockButton(false);
+        },
       });
     } catch (error) {
       notification().error(`An unexpected error occurred: ${error.message}`);
@@ -62,15 +66,15 @@ const Page = () => {
   };
 
   return (
-    <section className="h-full bg-gray-100 overflow-y-scroll">
-      <div className="h-full mt-[60px] py-10 flex lg:flex-row flex-col lg:w-[80%] w-full mx-auto p-5">
+    <section className=" bg-gray-100 overflow-y-scroll h-[calc(100%-72px)]">
+      <div className="h-full flex lg:flex-row gap-4 flex-col lg:w-[80%] w-full mx-auto px-10 py-5">
         <div className="lg:w-1/2 w-full flex flex-col gap-3">
           <UploadImage onUpload={handleImageProcess} fileData={file} />
           <div className="h-[300px] max-h-[300px]">
             <UploadImagePreview file={file} />
           </div>
         </div>
-        <div className="lg:w-1/2 w-full relative">
+        <div className="lg:w-1/2 w-full">
           <CardForm ref={formRef} resetData={handleReset} />
         </div>
       </div>
